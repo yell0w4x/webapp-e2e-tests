@@ -27,7 +27,7 @@ COLLECT_LOGS=
 
 usage() {
 cat << EOF
-Run end-to-end web application tests. 
+Run web application end-to-end tests.
 
 Usage:
     ${0} [OPTIONS]
