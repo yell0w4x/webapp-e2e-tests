@@ -29,6 +29,9 @@ To run headless use `--headless` option. Runs in any OS that docker supports.
 
     ./run --sut-location https://google.com --headless
 
+The result should look like 
+![Example result](https://raw.githubusercontent.com/yell0w4x/webapp-e2e-tests/master/example-result.png)
+
 # Firefox profile
 
 For now Firefox 91.9.0esr (64-bit) is used.
@@ -47,7 +50,7 @@ Use same `./run` script to run in Bitbucket pipeline. See `bitbucket-pipelines.y
 # Postgres database wipe before test
 
 Reference `db_conn`, `wipe_db` fixtures to wipe the database.
-Look for `--skip-db-wipe` and `SKIP_DB_WIPE` in files to see the details.
+Look for `--skip-db-wipe` and `SKIP_DB_WIPE` in source files to see the details.
 
 # CLI
 
