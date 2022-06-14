@@ -1,0 +1,39 @@
+definitions:
+  services:
+    docker:
+      memory: 2048  
+pipelines:
+  custom:
+    stage:
+      - variables:
+          - name: RUN_EXTRA_ARGS
+      - step:
+          name: Run tests against https://stage.example.com/
+          script:
+            - ./run --headless --destructive $RUN_EXTRA_ARGS
+          artifacts:
+            - failure_logs/**
+          services:
+            - docker
+
+    prod:
+      - variables:
+          - name: RUN_EXTRA_ARGS
+      - step:
+          name: Run tests against https://example.com/
+          script:
+            - ./run --prod --headless $RUN_EXTRA_ARGS
+          artifacts:
+            - failure_logs/**
+          services:
+            - docker
+  branches:
+    '**':
+      - step:
+          name: Run tests against https://stage.example.com/
+          script:
+            - ./run --destructive --headless
+          artifacts:
+            - failure_logs/**
+          services:
+            - docker

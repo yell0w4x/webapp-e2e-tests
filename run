@@ -1,0 +1,232 @@
+#!/usr/bin/env bash
+
+IP=
+OS_NAME="$(uname -s)"
+case "${OS_NAME}" in
+    Darwin*)
+        IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+    ;;
+esac
+
+if [ -z "$(command -v realpath)" ]; then
+    realpath() {
+        [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+    }
+fi
+
+THIS_DIR="$(dirname $(realpath ${0}))"
+IMAGE_NAME="webapp-e2e-tests"
+TEMP_CONTAINER_NAME=
+CONTAINER_NAME="webapp_system_tests_run"
+CONTAINERS=()
+BASE_IMAGE_TAG="0.0.3"
+ITER_NUM=1
+SKIP_DB_WIPE=
+HEADLESS=
+COLLECT_LOGS=
+
+usage() {
+cat << EOF
+Run end-to-end web application tests. 
+
+Usage:
+    ${0} [OPTIONS]
+
+Options:
+    --search-for        Example argument to show how to pass args to tests from cli (default: 'please write tests').
+    --headless          Do not show browser window on the current screen.
+    --sut-location      System Under Test url (default: https://stage.example.com)
+    --api-base-url      API base url for the selected environment
+                        (default: https://api-stage.example.com/)
+    --destructive       Run destructive tests also
+    --google-account    Google account to use for authorization if there is (default: '').
+    --skip-db-wipe      Skip database wipe on RC
+    -n,--repeat NUM     Number of test iterations to run (default: 1)
+    --collect-logs      Collect logs regardless of failure.
+    --open-dev-tools    Open dev tools on browser start.
+    --open-js-console   Open js console on browser start.
+    --prod              Preset for prod environment. 
+                        Will be converted to these options:
+                            --skip-db-wipe
+                            --sut-location=https://app.example.com/
+                            --api-base-url=https://api.example.com/
+
+    --pytest-help       Pytest related help
+    -h|--help           Show this message and exit
+
+All default urls are related to the default environment which is RC 
+as well as the default actions (like db wipe etc.) are performed on RC.
+
+On failure test logs and screenshot are available under 'failure_logs' folder. 
+In case of '--headless' option the failed test video is also available.
+
+NOTE:
+
+    All extra options are passed to the pytest as is. 
+    See pytest --help for more options or ${0} --pytest-help.
+    Useful are -s show tests stdout and -k filter by test name.
+    There is also possible to pass test file name(s) as 
+    positional args like test_rent_gpu.py to run only tests from this file.
+    On OSX use --headless to run or provide Xorg compartibility.
+
+EXAMPLES:
+
+    Runs all non-destructive tests on production with default params.
+
+        ./run --prod
+
+    The same, but runs headless
+
+        ./run --prod --headless
+
+    Runs only tests from test_search_for.py.
+
+        ./run --prod test_search_for.py --headless
+
+    Runs headless with specified sut location
+
+        ./run --sut-locaiton https://google.com --headless
+EOF
+}
+
+ARGS=()
+# set -eux
+
+set_default_prod_options() {
+    local SUT_LOCATION=
+    local BASE_URL=
+
+    for arg in ${@}; do
+        case ${arg} in 
+            --skip-db-wipe)
+                SKIP_DB_WIPE=1
+                ;;
+
+            --sut-location*)
+                SUT_LOCATION=1
+                ;;
+
+            --api-base-url*)
+                BASE_URL=1
+                ;;
+
+            --destructive)
+                echo -e "\033[33mWARNING!\033[0m Your are about to running destructive tests on prod, continue [y/N]\033[0m"
+                read USER_INPUT
+                if ! ( [ "${USER_INPUT}" == "y" ] || [ "${USER_INPUT}" == "Y" ] ); then
+                    echo "Exit"
+                    exit 1
+                fi
+                ;;
+        esac
+    done
+
+    if [ -z "${SKIP_DB_WIPE}" ]; then
+        SKIP_DB_WIPE=1
+        ARGS+=("--skip-db-wipe")
+    fi
+
+    if [ -z "${SUT_LOCATION}" ]; then
+        ARGS+=("--sut-location=https://app.example.com/")
+    fi
+
+    if [ -z "${BASE_URL}" ]; then
+        ARGS+=("--api-base-url=https://api.example.com/")
+    fi
+}
+
+while [ ${#} -gt 0 ]; do 
+    case "${1}" in 
+        -h|--help)
+            usage
+            exit
+            ;;
+
+        --pytest-help)
+            docker build -t "${IMAGE_NAME}" --build-arg "TAG=${BASE_IMAGE_TAG}" "${THIS_DIR}/src"
+            docker run ${STDIN_FLAG} --shm-size=2gb -t --name ${CONTAINER_NAME} "${IMAGE_NAME}" "--help"
+            exit
+            ;;
+
+        --skip-db-wipe)
+            ARGS+=("${1}")
+            SKIP_DB_WIPE=1
+            ;;
+
+        -n|--repeat)
+            shift
+            ITER_NUM="${1}"
+            ;;
+        
+        --prod)
+            TMP_ARG="${@}"
+            TMP_ARG+=("${ARGS[@]}")
+            set_default_prod_options "${TMP_ARG[@]}"
+            ;;
+
+        --headless)
+            HEADLESS=1
+            ARGS+=("${1}")
+            ;;
+
+        --collect-logs)
+            COLLECT_LOGS=1
+            ARGS+=("${1}")
+            ;;
+
+        *)
+            ARGS+=("${1}")
+            ;;
+    esac
+
+    shift
+done
+
+set -eu
+
+if [ -t 1 ] ; then STDIN_FLAG="-i"; else STDIN_FLAG=""; fi
+
+docker rm -f ${CONTAINER_NAME} || true
+
+function on_exit {
+    xhost - || true
+    docker cp "${TEMP_CONTAINER_NAME}:/tmp/failure_logs" "${THIS_DIR}" || true
+    if [ -n "${COLLECT_LOGS}" ]; then
+        docker cp "${TEMP_CONTAINER_NAME}:/tmp/logs" "${THIS_DIR}" || true
+    fi
+
+    docker rm "${CONTAINERS[@]}" || true
+}
+trap on_exit EXIT
+
+xhost + || true
+
+rm -rf "${THIS_DIR}/failure_logs" "${THIS_DIR}/logs"
+
+CACHE_BUST=1
+
+if [ -z "${SKIP_DB_WIPE}" ]; then
+    CACHE_BUST="$(date +%s)"
+fi
+
+docker build -t "${IMAGE_NAME}" --build-arg "TAG=${BASE_IMAGE_TAG}" --build-arg "CACHE_BUST=${CACHE_BUST}" \
+    --build-arg "SKIP_DB_WIPE=${SKIP_DB_WIPE}" "${THIS_DIR}/src"
+
+echo -e "\033[34mRunning tests... [${ARGS[@]}]\033[0m"
+
+for I in $(seq ${ITER_NUM}); do
+    echo -e "\033[36mIteration ${I} of ${ITER_NUM}\033[0m"
+    TEMP_CONTAINER_NAME="${CONTAINER_NAME}${I}"
+    CONTAINERS+=("${TEMP_CONTAINER_NAME}")
+    if [ -z "${HEADLESS}" ]; then
+# HINT: 
+#
+# If you sometimes have name resolving issues
+# put name explicitly --add-host="db.example.com:1.1.1.1" to /etc/hosts via this docker cli option
+        docker run ${STDIN_FLAG} --net=host -e DISPLAY="${IP}:0" \
+            --shm-size=2gb -t --name "${TEMP_CONTAINER_NAME}" "${IMAGE_NAME}" "${ARGS[@]}" -v
+    else
+        docker run ${STDIN_FLAG} \
+            --shm-size=2gb -t --name "${TEMP_CONTAINER_NAME}" "${IMAGE_NAME}" "${ARGS[@]}" -v
+    fi
+done
