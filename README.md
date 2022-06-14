@@ -19,21 +19,21 @@ See this for more details https://docs.docker.com/engine/install/ubuntu/#install
 
 # Example run
 
-To see the browser window within curent display issue this. 
-This only works for Linux or possibly for another environment with Xorg support.
-Possible to run on MacOS, but with some adoptions applied.
-Note in none headless mode there is no video available.
-
-    ./run --sut-location https://google.com
-
 To run headless use `--headless` option. Runs in any OS that docker supports.
 
     ./run --sut-location https://google.com --headless
 
+To see the browser window within curent display issue following line. 
+Note this only works for Linux or possibly for another environment with Xorg support.
+Also possible to run on MacOS, but with some adoptions applied.
+Note in none headless mode there is no video available.
+
+    ./run --sut-location https://google.com
+
 The result should look like 
 ![Example result](https://raw.githubusercontent.com/yell0w4x/webapp-e2e-tests/master/example-result.png)
 
-If your sut is on same machine packed in docker container use container name in url or ip address.
+If your SUT is on the same machine packed in docker container use container name in url or ip address.
 
 # Firefox profile
 
