@@ -40,7 +40,7 @@ If your SUT is on the same machine packed in docker container use container name
 For now Firefox 91.9.0esr (64-bit) is used.
 This archive `3fdkgzzo.default-esr.tar.gz` constains `~/.mozilla/firefox/3fdkgzzo.default-esr` 
 firefox profile directory (in public repo it's empty, of course).
-To use google auth fixture make gmail (google) account. Log in into this account 
+To use google auth fixture `logged_in_selenium` make gmail (google) account. Log in into this account 
 under firefox with the same version on your host system. 
 Then exit firefox and archive firefox account directory. Replace the archive within the repo.
 You can use distinct folder name. In that case change the name in `defs.py`.
