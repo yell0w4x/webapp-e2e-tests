@@ -54,12 +54,13 @@ Use same `./run` script to run in Bitbucket pipeline. See `bitbucket-pipelines.y
 
 Reference `db_conn`, `wipe_db` fixtures to wipe the database.
 Look for `--skip-db-wipe` and `SKIP_DB_WIPE` in source files to see the details.
+Database related env variables are set in `Dockerfile`.
 
 # CLI
 
 ```
 $ ./run --help
-Run end-to-end web application tests. 
+Run web application end-to-end tests.
 
 Usage:
     ./run [OPTIONS]
@@ -73,7 +74,7 @@ Options:
                         (default: https://api-stage.example.com/)
     --destructive       Run destructive tests also
     --google-account    Google account to use for authorization if there is (default: '').
-    --skip-db-wipe      Skip database wipe on RC
+    --skip-db-wipe      Skip database wipe.
     -n,--repeat NUM     Number of test iterations to run (default: 1)
     --collect-logs      Collect logs regardless of failure.
     --open-dev-tools    Open dev tools on browser start.
@@ -87,8 +88,8 @@ Options:
     --pytest-help       Pytest related help
     -h|--help           Show this message and exit
 
-All default urls are related to the default environment which is RC 
-as well as the default actions (like db wipe etc.) are performed on RC.
+All default urls are related to the default environment which is stage 
+as well as the default actions (like db wipe etc.) are performed on stage.
 
 On failure test logs and screenshot are available under 'failure_logs' folder. 
 In case of '--headless' option the failed test video is also available.
@@ -99,7 +100,7 @@ NOTE:
     See pytest --help for more options or ./run --pytest-help.
     Useful are -s show tests stdout and -k filter by test name.
     There is also possible to pass test file name(s) as 
-    positional args like test_rent_gpu.py to run only tests from this file.
+    positional args like 'test_search_for.py' to run only tests from this file.
     On OSX use --headless to run or provide Xorg compartibility.
 
 EXAMPLES:
