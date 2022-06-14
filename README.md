@@ -64,7 +64,8 @@ Usage:
     ./run [OPTIONS]
 
 Options:
-    --search-for        Example argument to show how to pass args to tests from cli (default: 'please write tests').
+    --search-for        Example argument to show how to pass args to tests from cli 
+                        (default: 'please write tests').
     --headless          Do not show browser window on the current screen.
     --sut-location      System Under Test url (default: https://stage.example.com)
     --api-base-url      API base url for the selected environment
