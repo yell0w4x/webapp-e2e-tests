@@ -12,7 +12,7 @@ if you have api and would like to use it for e.g. tests setup/tear down or other
 There is a `--prod` preset to easily change related options. 
 See `set_default_prod_options` in `./run` script.
 
-# Prerequsistes
+# Prerequisites
 
 Docker must be installed. The easiest way to have it on Linux is `wget -O- https://get.docker.com`.
 
