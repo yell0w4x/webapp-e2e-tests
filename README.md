@@ -14,7 +14,8 @@ See `set_default_prod_options` in `./run` script.
 
 # Prerequisites
 
-Docker must be installed. The easiest way to have it on Linux is `wget -O- https://get.docker.com`.
+Docker must be installed. The easiest way to have it on Linux is `wget -qO- https://get.docker.com | bash`.
+See this for more details https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script.
 
 # Example run
 
