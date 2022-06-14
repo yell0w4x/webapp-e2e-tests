@@ -55,9 +55,7 @@ Options:
     --pytest-help       Pytest related help
     -h|--help           Show this message and exit
 
-All default urls are related to the default environment which is stage 
-as well as the default actions (like db wipe etc.) are performed on stage.
-
+All default urls are related to the default environment which is stage. 
 On failure test logs and screenshot are available under 'failure_logs' folder. 
 In case of '--headless' option the failed test video is also available.
 
