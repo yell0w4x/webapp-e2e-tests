@@ -1,7 +1,7 @@
-# Web application selenium based e2e tests docker container
+# Docker container for e2e web apps testing  
 
 Simple yet powerful e2e tests container. Uses firefox webdriver to perform tests. 
-Ready to use with google auth. Captures tests video, screenshot, logs and populate them 
+Ready to use with google auth. Captures test video, screenshot, logs and populate them 
 on failure into `./failure_logs` folder.
 
 # Example run
