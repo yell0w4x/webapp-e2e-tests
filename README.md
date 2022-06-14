@@ -4,20 +4,6 @@ Simple yet powerful e2e tests container. Uses firefox webdriver to perform tests
 Ready to use with google auth. Captures tests video, screenshot, logs and populate them 
 on failure into `./failure_logs` folder.
 
-# SUT location
-
-Put your sut (System Under Test) endpoint to `defs.py` or use `--sut-locaiton` option. 
-There is also `--api-base-url` that is wrapped with fixture `api_base_url` in case 
-if you have api and would like to use it for e.g. tests setup/tear down or other purpose.
-
-There is a `--prod` preset to easily change related options. 
-See `set_default_prod_options` in `./run` script.
-
-# Prerequisites
-
-Docker must be installed. The easiest way to have it on Linux is `wget -qO- https://get.docker.com | bash`.
-See this for more details https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script.
-
 # Example run
 
 To run headless use `--headless` option. Runs in any OS that docker supports.
@@ -35,6 +21,20 @@ The result should look like
 ![Example result](https://raw.githubusercontent.com/yell0w4x/webapp-e2e-tests/master/example-result.png)
 
 If your SUT is on the same machine packed in docker container use container name in url or ip address.
+
+# SUT location
+
+Put your sut (System Under Test) endpoint to `defs.py` or use `--sut-locaiton` option. 
+There is also `--api-base-url` that is wrapped with fixture `api_base_url` in case 
+if you have api and would like to use it for e.g. tests setup/tear down or other purpose.
+
+There is a `--prod` preset to easily change related options. 
+See `set_default_prod_options` in `./run` script.
+
+# Prerequisites
+
+Docker must be installed. The easiest way to have it on Linux is `wget -qO- https://get.docker.com | bash`.
+See this for more details https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script.
 
 # Firefox profile
 
