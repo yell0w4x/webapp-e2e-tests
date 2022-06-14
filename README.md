@@ -56,6 +56,7 @@ Look for `--skip-db-wipe` and `SKIP_DB_WIPE` in source files to see the details.
 
 # CLI
 
+```
 $ ./run --help
 Run end-to-end web application tests. 
 
@@ -116,7 +117,7 @@ EXAMPLES:
     Runs headless with specified sut location
 
         ./run --sut-locaiton https://google.com --headless
-
+```
 
 # Extra
 
