@@ -12,7 +12,7 @@ To run headless use `--headless` option. Runs in any OS that docker supports.
 
 To see the browser window within curent display issue following line. 
 Note this only works for Linux or possibly for another environment with Xorg support.
-Also possible to run on MacOS, but with some adoptions applied.
+Also possible to run on MacOS, but with some adjusting applied.
 Note in none headless mode there is no video available.
 
     ./run --sut-location https://google.com
