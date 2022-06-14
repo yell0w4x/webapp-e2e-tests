@@ -32,6 +32,8 @@ To run headless use `--headless` option. Runs in any OS that docker supports.
 The result should look like 
 ![Example result](https://raw.githubusercontent.com/yell0w4x/webapp-e2e-tests/master/example-result.png)
 
+If your sut is on same machine packed in docker container use container name in url or ip address.
+
 # Firefox profile
 
 For now Firefox 91.9.0esr (64-bit) is used.
