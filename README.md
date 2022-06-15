@@ -1,4 +1,4 @@
-# Docker container for e2e web apps testing  
+# Docker container for web app e2e testing  
 
 Simple yet powerful e2e tests container. Uses firefox webdriver to perform tests. 
 Ready to use with google auth. Captures test video, screenshot, logs and populate them 
