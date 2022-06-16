@@ -10,7 +10,7 @@ To run headless use `--headless` option. Runs in any OS that docker supports.
 
     ./run --sut-location https://google.com --headless
 
-To see the browser window within curent display issue following line. 
+To see the browser window within current display issue following line. 
 Note this only works for Linux or possibly for another environment with Xorg support.
 Also possible to run on MacOS, but with some adjusting applied.
 Note in none headless mode there is no video available.
@@ -24,7 +24,7 @@ If your SUT is on the same machine packed in docker container use container name
 
 # SUT location
 
-Put your sut (System Under Test) endpoint to `defs.py` or use `--sut-locaiton` option. 
+Put your SUT (System Under Test) endpoint to `defs.py` or use `--sut-locaiton` option. 
 There is also `--api-base-url` that is wrapped with fixture `api_base_url` in case 
 if you have api and would like to use it for e.g. tests setup/tear down or other purpose.
 
