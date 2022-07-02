@@ -17,7 +17,7 @@ Note in none headless mode there is no video available.
 
     ./run --sut-location https://google.com
 
-The result should look like 
+The result should look like this.
 ![Example result](https://raw.githubusercontent.com/yell0w4x/webapp-e2e-tests/master/example-result.png)
 
 If your SUT is on the same machine packed in docker container use container name or ip address in url.
