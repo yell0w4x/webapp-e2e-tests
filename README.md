@@ -24,7 +24,7 @@ If your SUT is on the same machine packed in docker container use container name
 
 # SUT location
 
-Put your SUT (System Under Test) endpoint to `defs.py` or use `--sut-locaiton` option. 
+Put your SUT (System Under Test) endpoint to `defs.py` or use `--sut-location` option. 
 There is also `--api-base-url` that is wrapped with fixture `api_base_url` in case 
 if you have api and would like to use it for e.g. tests setup/tear down or other purpose.
 
