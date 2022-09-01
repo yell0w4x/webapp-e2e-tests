@@ -22,6 +22,8 @@ The result should look like this.
 
 If your SUT is on the same machine packed in docker container use container name or it's ip address in url.
 
+[One more](#bigbasket)<a name="bigbasket"></a>
+
      ./run --sut-location https://bigbasket.com -k test_big_basket_must_show_product_in_cart
 
 # SUT location
