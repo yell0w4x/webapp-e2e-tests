@@ -4,23 +4,25 @@ Simple yet powerful e2e tests container. Uses firefox webdriver to perform tests
 Ready to use with google auth. Captures test video, screenshot, logs and populate them 
 on failure into `./failure_logs` folder.
 
-# Example run
+# Examples run
 
 To run headless use `--headless` option. Runs in any OS that docker supports.
 
-    ./run --sut-location https://google.com --headless
+    ./run --sut-location https://google.com --headless -k test_google_must_search_for_a_query_string
 
 To see the browser window within current display issue following line. 
 Note this only works for Linux or possibly for another environment with Xorg support.
 Also possible to run on MacOS, but with some adjustments applied.
 Note in none headless mode there is no video available.
 
-    ./run --sut-location https://google.com
+    ./run --sut-location https://google.com -k test_google_must_search_for_a_query_string
 
 The result should look like this.
 ![Example result](https://raw.githubusercontent.com/yell0w4x/webapp-e2e-tests/master/example-result.png)
 
-If your SUT is on the same machine packed in docker container use container name or ip address in url.
+If your SUT is on the same machine packed in docker container use container name or it's ip address in url.
+
+     ./run --sut-location https://bigbasket.com -k test_big_basket_must_show_product_in_cart
 
 # SUT location
 
