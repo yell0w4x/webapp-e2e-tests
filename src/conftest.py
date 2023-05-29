@@ -195,11 +195,14 @@ def logged_in_selenium(proxy, selenium, firefox_options, sut_location, google_ac
     size = selenium.get_window_size()
     print(f"\033[34mWindow size: width = {size['width']}px, height = {size['height']}px\033[0m")
 
-    wait = WebDriverWait(selenium, DEFAULT_TIMEOUT)
-    hover_then_click(selenium, '//i[contains(text(), "account_circle")]')
-    hover_then_click(selenium, '//div[@class="q-field__inner relative-position col self-stretch"][1]')
-    wait_for_element_to_be_clickable(selenium, f'//div[@data-identifier="{google_account}"]//img')
-    hover_then_click(selenium, f'//div[@data-identifier="{google_account}"]', double_click=True, delay=1)
+    # HINT:
+    #   Uncomment and adjust below code to perform your app login
+    #
+    # wait = WebDriverWait(selenium, DEFAULT_TIMEOUT)
+    # hover_then_click(selenium, '//i[contains(text(), "account_circle")]')
+    # hover_then_click(selenium, '//div[@class="q-field__inner relative-position col self-stretch"][1]')
+    # wait_for_element_to_be_clickable(selenium, f'//div[@data-identifier="{google_account}"]//img')
+    # hover_then_click(selenium, f'//div[@data-identifier="{google_account}"]', double_click=True, delay=1)
 
     # HINT:
     # 
