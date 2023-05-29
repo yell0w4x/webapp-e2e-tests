@@ -128,3 +128,6 @@ EXAMPLES:
 # Extra
 
 Python version 3.9 is used.
+
+What if example test(s) fails? 
+Usually it's due to some changes in example SUT's dom since last repo review.
